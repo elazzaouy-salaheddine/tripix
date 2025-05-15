@@ -1,0 +1,12 @@
+<!-- blog/templates/blog/latest_posts.html -->
+
+<ul class="list-unstyled">
+  {% for post in latest_posts %}
+    <li>
+      <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+      <small class="text-muted d-block">{{ post.created_at|date:"M j, Y" }}</small>
+    </li>
+  {% empty %}
+    <li>No recent posts</li>
+  {% endfor %}
+</ul>

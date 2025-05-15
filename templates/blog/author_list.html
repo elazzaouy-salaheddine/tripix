@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Authors{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="mb-4">Meet Our Authors</h2>
+    <div class="row g-4">
+      {% for author in authors %}
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ author.get_full_name|default:author.username }}</h5>
+              <p class="card-text text-muted">
+                {{ author.post_set.filter(published=True).count }} posts
+              </p>
+              <a href="{% url 'author-detail' pk=author.pk %}" class="btn btn-primary">View Posts</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p>No authors found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

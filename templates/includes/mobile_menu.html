@@ -1,0 +1,32 @@
+{% load static %}
+<!--=================
+    Mobile Menu
+================= -->
+<div class="vs-menu-wrapper">
+    <div class="vs-menu-area text-center">
+      <div class="mobile-logo">
+        <a href="{% url 'home' %}"><img src="{% static 'img/logo.svg' %}" alt="Carmax" class="logo" /></a>
+        <button class="vs-menu-toggle"><i class="fal fa-times"></i></button>
+      </div>
+      <div class="vs-mobile-menu">
+        <ul>
+          <li class="menu-item-has-children">
+            <a href="javascript:void(0)">Home</a>
+            <ul class="sub-menu">
+              <li><a href="{% url 'home' %}">Home 1</a></li>
+              <li><a href="{% url 'home' %}">Home 2</a></li>
+              <li><a href="{% url 'home' %}">Home 3</a></li>
+            </ul>
+          </li>
+          <li class="menu-item-has-children">
+            <a href="javascript:void(0)">Destinations</a>
+            <ul class="sub-menu">
+              <li><a href="">Destinations</a></li>
+              <li><a href="">Destination Details</a></li>
+            </ul>
+          </li>
+          <!-- Other menu items -->
+        </ul>
+      </div>
+    </div>
+  </div>

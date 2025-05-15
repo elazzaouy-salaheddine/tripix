@@ -1,0 +1,38 @@
+<!-- blog/search_results.html -->
+
+{% extends "base.html" %}
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2>Search Results for "{{ request.GET.q }}"</h2>
+    
+    {% if posts %}
+      <div class="row g-4 mt-4">
+        {% for post in posts %}
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+              {% if post.image %}
+                <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text text-muted">{{ post.excerpt|truncatewords:20 }}</p>
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+
+      
+    {% else %}
+      <div class="alert alert-info mt-4">
+        No results found. Try another search.
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
