@@ -89,7 +89,7 @@ class RelatedTrip(models.Model):
 # Tour Map Model
 class TourMap(models.Model):
     destination = models.OneToOneField(Destination, on_delete=models.CASCADE, related_name='tour_map')
-    map_link = models.URLField()  # e.g., Google Maps embed URL
+    map_link = models.URLField(null=True, blank=True)  # e.g., Google Maps embed URL
 
     def __str__(self):
         return f"Map for {self.destination.name}"
@@ -110,3 +110,18 @@ class Enquiry(models.Model):
 
     def __str__(self):
         return f"Enquiry from {self.name}"
+    
+
+class TopDestination(models.Model):
+    destination = models.ForeignKey('Destination', on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0, blank=True)
+    label = models.CharField(max_length=50, blank=True, help_text="e.g., Best Seller, Popular")
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Top Destination'
+        verbose_name_plural = 'Top Destinations'
+
+    def __str__(self):
+        return f"{self.destination.name} - {self.label or 'Featured'}"
+

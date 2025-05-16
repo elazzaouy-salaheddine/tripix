@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Destination, Tag, Itinerary, CostIncludeExclude, FAQ, RelatedTrip, TourMap, Enquiry
+from .models import Destination, Tag, Itinerary, CostIncludeExclude, FAQ, RelatedTrip, TourMap, Enquiry, TopDestination
 from django.utils.html import format_html
 
 
@@ -78,3 +78,9 @@ class EnquiryAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'destination', 'created_at')
     list_filter = ('destination', 'created_at')
     readonly_fields = ('created_at',)
+
+@admin.register(TopDestination)
+class TopDestinationAdmin(admin.ModelAdmin):
+    list_display = ('destination', 'label', 'order')
+    list_editable = ('label', 'order')
+    search_fields = ('destination__name',)

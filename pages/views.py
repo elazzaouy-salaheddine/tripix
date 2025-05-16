@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from blog.models import Post
-
+from destinations.models import Destination, TopDestination
 
 class HomeView(TemplateView):
     template_name = 'pages/home.html'  # specifies the template to use
@@ -11,7 +11,8 @@ class HomeView(TemplateView):
         context['title'] = 'Home Page'
         context['welcome_message'] = 'Welcome to our website!'
         context['latest_posts'] = Post.objects.filter(published=True).order_by('-created_at')[:3]
-
+        context["awesome_tours"] = Destination.objects.filter(published=True).order_by('-created_at')[:5]
+        context["top_destinations"] = TopDestination.objects.select_related('destination').all()
         return context
 
 class AboutView(TemplateView):
