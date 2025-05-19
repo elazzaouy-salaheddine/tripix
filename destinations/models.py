@@ -1,6 +1,12 @@
 from django.db import models
 from django.utils.text import slugify
 import uuid
+from django.contrib.auth import get_user_model
+from django.urls import reverse
+
+
+User = get_user_model()
+
 # Tag Model
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -27,6 +33,7 @@ class Destination(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     @property
     def included_cost_items(self):

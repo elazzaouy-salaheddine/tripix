@@ -1,0 +1,20 @@
+<!-- templates/account/email_confirm.html -->
+
+{% extends "base.html" %}
+{% block title %}Confirm Email{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <h3>Email Confirmation</h3>
+        <p>We’re confirming your email address. Please wait...</p>
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

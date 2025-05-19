@@ -1,0 +1,24 @@
+<!-- templates/account/verification_sent.html -->
+
+{% extends "base.html" %}
+{% block title %}Verify Your Email{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <h3>Verify Your Email Address</h3>
+        <p>We’ve sent an email to your inbox. Please click the link to complete registration.</p>
+
+        <p>If you didn’t receive the email, check your spam/junk folder.</p>
+
+        <form method="post" action="{% url 'account_email_verification_sent' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link">Resend Verification Email</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Step 2 - Itinerary{% endblock %}
+
+{% block content %}
+<h3>Step 2: Itinerary</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% for form in formset %}
+    {{ form.as_p }}
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Next</button>
+</form>
+{% endblock %}

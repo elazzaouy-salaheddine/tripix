@@ -48,7 +48,7 @@ class DestinationAdmin(admin.ModelAdmin):
     image_preview.short_description = "Image Preview"
     fieldsets = (
         (None, {
-            'fields': ('name', 'image', 'overview', 'slug')
+            'fields': ('created_by','name', 'image', 'overview', 'slug')
         }),
         ('Details', {
             'fields': ('location', 'accommodation', 'best_season', 'duration_days', 'elevation', 'tour_types','old_price', 'price')

@@ -1,0 +1,59 @@
+<!-- templates/dashboard/booking_detail.html -->
+
+{% extends "base.html" %}
+{% block title %}Booking Details{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2>Booking Details</h2>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Customer Info</h5>
+        <p><strong>Name:</strong> {{ booking.name }}</p>
+        <p><strong>Email:</strong> {{ booking.email }}</p>
+        {% if booking.phone %}
+          <p><strong>Phone:</strong> {{ booking.phone }}</p>
+        {% endif %}
+        {% if booking.Country %}
+          <p><strong>Country:</strong> {{ booking.Country }}</p>
+        {% endif %}
+        {% if booking.NoofAdults %}
+          <p><strong>No. of Adults:</strong> {{ booking.NoofAdults }}</p>
+        {% endif %}
+        {% if booking.NoofChildren %}
+          <p><strong>No. of Children:</strong> {{ booking.NoofChildren }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Destination</h5>
+        {% if booking.destination %}
+          <p><a href="{% url 'destination-detail' pk=booking.destination.id %}">
+              {{ booking.destination.name }}
+          </a></p>
+        {% else %}
+          <p><em>This booking is for an unknown/deleted destination.</em></p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Message</h5>
+        <p>{{ booking.message }}</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body d-flex justify-content-between">
+        <small class="text-muted">Submitted on {{ booking.created_at|date:"M j, Y g:i A" }}</small>
+        
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
