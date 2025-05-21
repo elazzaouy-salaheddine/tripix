@@ -139,6 +139,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+
+
+
+
 # DEFAULT PRIMARY KEY FIELD TYPE
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -210,5 +214,27 @@ LOGGING = {
     },
 }
 
-# CUSTOM SETTINGS (add your own below)
-# ...
+# Cloudflare settings
+CLOUDFLARE_R2_ACCESS_KEY = config("CLOUDFLARE_R2_ACCESS_KEY",cast=str, default="")
+CLOUDFLARE_R2_SECRET_KEY = config("CLOUDFLARE_R2_SECRET_KEY",cast=str, default="")
+CLOUDFLARE_R2_BUCKET_NAME = config("CLOUDFLARE_R2_BUCKET_NAME",cast=str, default="")
+CLOUDFLARE_R2_ENDPOINT_URL = config("CLOUDFLARE_R2_ENDPOINT_URL",cast=str, default="")
+
+CLOUDFLARE_R2_CONFIG_OPTIONS = {
+    "access_key": CLOUDFLARE_R2_ACCESS_KEY,
+    "secret_key": CLOUDFLARE_R2_SECRET_KEY,
+    "bucket_name": CLOUDFLARE_R2_BUCKET_NAME,
+    "endpoint_url": CLOUDFLARE_R2_ENDPOINT_URL,
+    "default_acl": "public-read",
+    "signature_version": "s3v4",
+}
+
+STORAGES = {
+    "default": {
+        "BACKEND": "helpers.cloudflare.storages.MediaFilesStorage",
+        "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+    },
+    "staticfiles": {
+        "BACKEND": STATICFILES_STORAGE
+    }
+}

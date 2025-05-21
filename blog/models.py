@@ -7,9 +7,9 @@ from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField  # supports image upload
 from django.utils.text import slugify
-from django.db.models.signals import post_save
-
-
+from django.db.models.signals import post_save, pre_delete
+import pathlib
+import uuid
 User = get_user_model()
 
 # Extend with a property
@@ -62,12 +62,22 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+def image_file_upload(instance,filepath):
+    instance_id = instance.slug if hasattr(instance, 'slug') else instance.id
+    if not instance.slug:
+        instance.slug = "0"
+    filepath = pathlib.Path(filepath).resolve()
+    fname = str(uuid.uuid1())
+    ext = filepath.suffix
+    return f"blog/{instance_id}/{fname}{filepath.name}"
+
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='blog/', null=True, blank=True)
+    image = models.ImageField(upload_to=image_file_upload, null=True, blank=True)
     content = RichTextUploadingField()
     excerpt = models.TextField(blank=True, help_text="Short summary shown in list views")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
@@ -81,6 +91,12 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        """Override delete to ensure image is deleted"""
+        if self.image:
+            self.image.delete()  # This will trigger the storage deletion
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return self.title
