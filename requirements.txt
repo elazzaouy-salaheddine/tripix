@@ -12,6 +12,7 @@ dj-rest-auth==7.0.1
 Django==5.2.1
 django-allauth==65.7.0
 django-ckeditor==6.7.2
+django-cleanup==9.0.0
 django-cors-headers==4.7.0
 django-filter==25.1
 django-formtools==2.3
