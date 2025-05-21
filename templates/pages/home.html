@@ -99,7 +99,7 @@
                 </div>
                 <div class="destination-content">
                   <div class="info">
-                    <h4 class="text-white text-capitalize"><a href="{% url 'destination-detail' pk=item.destination.id %}">{{item.destination.location}}</a></h4>
+                    <h4 class="text-white text-capitalize"><a href="{% url 'destination-detail' slug=item.destination.slug %}">{{item.destination.location}}</a></h4>
                     <span class="text-theme-color d-block">{{item.destination.price}}$</span>
                   </div>
                   <a href="#" class="icon bg-theme-color text-white-color"><i class="fa-solid fa-location-dot"></i></a>
@@ -152,7 +152,7 @@
                       {% endif %}
                     </div>
                     <div class="tour-package-content">
-                      <h5 class="title line-clamp-2"><a href="{% url 'destination-detail' pk=awesome_tour.id %}">{{ awesome_tour.name }}</a></h5>
+                      <h5 class="title line-clamp-2"><a href="{% url 'destination-detail' slug=awesome_tour.slug %}">{{ awesome_tour.name }}</a></h5>
                       <div class="pricing-container">
                         <div class="package-info">
                           <span class="package-location">
@@ -172,7 +172,7 @@
                           </div>
                         </div>
                       </div>
-                      <a href="{% url 'destination-detail' pk=awesome_tour.id %}" class="vs-btn style7 w-100">Book Now</a>
+                      <a href="{% url 'destination-detail' slug=awesome_tour.slug %}" class="vs-btn style7 w-100">Book Now</a>
                     </div>
                   </div>
                 </div>

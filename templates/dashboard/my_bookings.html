@@ -1,49 +1,55 @@
 <!-- templates/dashboard/my_bookings.html -->
 
-{% extends "base.html" %}
-{% block title %}My Bookings{% endblock %}
+{% extends 'base.html' %}
+{% block title %}
+  My Bookings
+{% endblock %}
 
 {% block content %}
-<section class="py-5">
-  <div class="container">
-    <h2 class="mb-4">Bookings/Enquiries for Your Destinations</h2>
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Sidebar (Hidden on mobile) -->
+        <div class="col-md-3 d-none d-md-block">
+          {% include 'dashboard/_sidebar_dashboard.html' %}
+        </div>
 
-    {% if bookings %}
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Customer Name</th>
-            <th>Email</th>
-            <th>Destination</th>
-            <th>Subject</th>
-            <th>Message</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for booking in bookings %}
-            <tr>
-              <td>{{ booking.name }}   <a href="{% url 'booking-detail' pk=booking.id %}" class="btn btn-sm btn-info">View</a>
-</td>
-              <td>{{ booking.email }}</td>
-              <td>
-                {% if booking.destination %}
-                  {{ booking.destination.name }}
-                {% else %}
-                  Deleted Destination
-                {% endif %}
-              </td>
-              <td>{{ booking.EnquirySubject|default:"—" }}</td>
-              <td>{{ booking.message|truncatechars:50 }}</td>
-              <td>{{ booking.created_at|date:"M j, Y g:i A" }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>You have no bookings yet.</p>
-    {% endif %}
+        <!-- Main Content -->
+        <div class="col-12 col-md-9">
+          <h2 class="mb-4">Bookings for Your Destinations</h2>
 
-  </div>
-</section>
+          {% if bookings %}
+            <div class="row g-4">
+              {% for booking in bookings %}
+                <div class="card" style="">
+                  <div class="card-body">
+                    <h5 class="card-title">{{booking.name}}</h5>
+                    <div class="card-text mb-3">
+                      <strong>Email:</strong> {{ booking.email }}<br />
+                      <strong>Destination:</strong>
+                      {% if booking.destination %}
+                        {{ booking.destination.name }}
+                      {% else %}
+                        Deleted Destination
+                      {% endif %}
+                      <br />
+                      <strong>Subject:</strong> {{ booking.EnquirySubject|default:'—' }}<br />
+                      <strong>Message:</strong> {{ booking.message }}<br />
+                      <strong>Date:</strong> {{ booking.created_at|date:'M j, Y g:i A' }}
+                    </div>
+
+                    <a href="{% url 'booking-detail' pk=booking.id %}" class="text-dark mx-2 ">View details</a>
+                    <a href="#" class="text-dark mx-2 ">Update status</a>
+                  </div>
+                </div>
+    
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted">You have no bookings yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}

@@ -1,32 +1,47 @@
 {% load static %}
-<!--=================
+<!--  =================
     Mobile Menu
-================= -->
+=================   -->
 <div class="vs-menu-wrapper">
-    <div class="vs-menu-area text-center">
-      <div class="mobile-logo">
-        <a href="{% url 'home' %}"><img src="{% static 'img/logo.svg' %}" alt="Carmax" class="logo" /></a>
-        <button class="vs-menu-toggle"><i class="fal fa-times"></i></button>
-      </div>
-      <div class="vs-mobile-menu">
-        <ul>
+  <div class="vs-menu-area text-center">
+    <div class="mobile-logo">
+      <a href="{% url 'home' %}"><img src="{% static 'img/logo.svg' %}" alt="Carmax" class="logo" /></a>
+      <button class="vs-menu-toggle"><i class="fal fa-times"></i></button>
+    </div>
+    <div class="vs-mobile-menu">
+      <ul>
+        <li class="menu-item-has-children">
+          <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="menu-item-has-children">
+          <a href="{% url 'destination-list' %}">Destinations</a>
+        </li>
+        <li class="menu-item-has-children">
+          <a href="{% url 'post-list' %}">Blog</a>
+        </li>
+        <li class="menu-item-has-children">
+          <a href="{% url 'faq' %}">FAQ's</a>
+        </li>
+        <li class="menu-item-has-children">
+          <a href="{% url 'contact' %}">Contact</a>
+        </li>
+
+        {% if user.is_authenticated %}
           <li class="menu-item-has-children">
-            <a href="javascript:void(0)">Home</a>
-            <ul class="sub-menu">
-              <li><a href="{% url 'home' %}">Home 1</a></li>
-              <li><a href="{% url 'home' %}">Home 2</a></li>
-              <li><a href="{% url 'home' %}">Home 3</a></li>
-            </ul>
+            <a href="{% url 'dashboard' %}" class="">Dashboard</a>
           </li>
+        {% else %}
           <li class="menu-item-has-children">
-            <a href="javascript:void(0)">Destinations</a>
-            <ul class="sub-menu">
-              <li><a href="">Destinations</a></li>
-              <li><a href="">Destination Details</a></li>
-            </ul>
+            <a class="" href="{% url 'account_login' %}">Login</a>
           </li>
-          <!-- Other menu items -->
-        </ul>
-      </div>
+
+          <li class="menu-item-has-children">
+            <a class="" href="{% url 'account_signup' %}">Register</a>
+          </li>
+        {% endif %}
+
+        <!-- Other menu items -->
+      </ul>
     </div>
   </div>
+</div>

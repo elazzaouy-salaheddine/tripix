@@ -76,7 +76,7 @@
                     <span>{{ destination.location }}</span>
                   </div>
                   <h5 class="title line-clamp-2">
-                    <a href="{% url 'destination-detail' pk=destination.id %}">{{ destination.name }}</a>
+                    <a href="{% url 'destination-detail' slug=destination.slug %}">{{ destination.name }}</a>
                   </h5>
                   <div class="tour-package-footer">
                     <div class="tour-duration">

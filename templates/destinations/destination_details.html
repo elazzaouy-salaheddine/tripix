@@ -274,7 +274,7 @@
                 </p>
                 <div class="row">
                   <div class="col-12">
-                    <form method="post" class="form-style2">
+                    <form method="post" class="form-style2" action="{% url 'destination-detail' slug=destination.slug %}" >
                       {% csrf_token %}
                       <input type="hidden" name="destination" value="{{ destination.id }}">
                       <div class="row">

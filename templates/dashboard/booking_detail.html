@@ -6,6 +6,15 @@
 {% block content %}
 <section class="py-5">
   <div class="container">
+
+        <div class="row g-4">
+
+      <!-- Sidebar (Hidden on mobile) -->
+      <div class="col-md-3  d-md-block">
+        {% include 'dashboard/_sidebar_dashboard.html' %}
+      </div>
+      <div class="col-md-9">
+
     <h2>Booking Details</h2>
 
     <div class="card shadow-sm mb-4">
@@ -32,7 +41,7 @@
       <div class="card-body">
         <h5 class="card-title">Destination</h5>
         {% if booking.destination %}
-          <p><a href="{% url 'destination-detail' pk=booking.destination.id %}">
+          <p><a href="{% url 'destination-detail' slug=booking.destination.slug %}">
               {{ booking.destination.name }}
           </a></p>
         {% else %}
@@ -54,6 +63,8 @@
         
       </div>
     </div>
+      </div>
+        </div>
   </div>
 </section>
 {% endblock %}

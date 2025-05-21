@@ -69,9 +69,7 @@ class MyEnquiryView(LoginRequiredMixin, ListView):
         user_destinations = Destination.objects.filter(created_by=self.request.user)
 
         # Get all bookings/enquiries for those destinations
-        return Enquiry.objects.filter(destination__in=user_destinations).select_related(
-            "destination"
-        )
+        return Enquiry.objects.filter(destination__in=user_destinations).select_related("destination").order_by("-created_at")
 
 
 class BookingDetailView(LoginRequiredMixin, DetailView):

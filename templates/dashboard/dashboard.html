@@ -1,71 +1,56 @@
 <!-- templates/account/dashboard.html -->
-
-{% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% extends 'base.html' %}
+{% block title %}
+  Dashboard
+{% endblock %}
 
 {% block content %}
-<section class="py-5">
-  <div class="container">
-{% comment %}  TODO:   {% if not user.emailaddress_set.filter(verified=True).exists %}
-  <div class="alert alert-warning text-center">
-    Please verify your email address.
-    <a href="{% url 'account_email_verification_sent' %}" class="btn btn-sm btn-primary ms-2">Resend Email</a>
-  </div> 
-{% endif %}{% endcomment %}
-    <div class="row">
-      <div class="col-md-3">
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Hello, {{ user.username }}</h5>
-            <p class="text-muted">{{ user.email }}</p>
-
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><a href="{% url 'account_email' %}">Email Settings</a></li>
-              <li class="list-group-item"><a href="{% url 'account_change_password' %}">Change Password</a></li>
-              <li class="list-group-item"><a href="{% url 'my-enquiry' %}">Your Bookings</a></li>
-              <li class="list-group-item"><a href="#">Saved Destinations</a></li>
-              <li class="list-group-item"><a href="{% url 'account_logout' %}">Logout</a></li>
-            </ul>
-          </div>
+  <section class="py-5">
+    <div class="container">
+      {% comment %}TODO:{% if not user.emailaddress_set.filter(verified=True).exists %}
+        <div class="alert alert-warning text-center">
+          Please verify your email address.
+          <a href="{% url 'account_email_verification_sent' %}" class="btn btn-sm btn-primary ms-2">Resend Email</a>
         </div>
-      </div>
+      {% endif %}
+      {% endcomment %}
+      <div class="row">
+        <div class="col-md-3">
+          {% include 'dashboard/_sidebar_dashboard.html' %}
+        </div>
+        <div class="col-md-9">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h4>Welcome Back, {{ user.username }}!</h4>
+              <p>This is your personal dashboard where you can manage your account and view the destinations you've created.</p>
 
- <div class="col-md-9">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h4>Welcome Back, {{ user.username }}!</h4>
-            <p>This is your personal dashboard where you can manage your account and view the destinations you've created.</p>
+              {% if user_destinations %}
+                <h5>Your Created Destinations</h5>
 
-            {% if user_destinations %}
-              <h5>Your Created Destinations</h5>
-              
-              <div class="row g-4 mt-3">
-                {% for destination in user_destinations %}
-                  <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm">
-                      {% if destination.image %}
-                        <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}">
-                      {% endif %}
-                      <div class="card-body">
-                        <h5 class="card-title">{{ destination.name }}</h5>
-                        <p class="card-text text-muted small">
-                          {{ destination.location }}
-                        </p>
-                        <a href="{% url 'destination-detail' pk=destination.pk %}" class="btn btn-sm btn-primary">View</a>
-                        <a href="{% url 'destination-delete' slug=destination.slug %}" class="btn btn-sm btn-primary">delete</a>
-                        
+                <div class="row g-4 mt-3">
+                  {% for destination in user_destinations %}
+                    <div class="col-md-6 col-lg-4">
+                      <div class="card h-100 shadow-sm">
+                        {% if destination.image %}
+                          <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" />
+                        {% endif %}
+                        <div class="card-body">
+                          <h5 class="card-title">{{ destination.name }}</h5>
+                          <p class="card-text text-muted small">{{ destination.location }}</p>
+                          <a href="{% url 'destination-detail' slug=destination.slug %}" class="btn btn-sm btn-primary">View</a>
+                          <a href="{% url 'destination-delete' slug=destination.slug %}" class="btn btn-sm btn-primary">delete</a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                {% endfor %}
-              </div>
-            {% else %}
-              <p class="mt-4">You haven't created any destinations yet.</p>
-            {% endif %}
+                  {% endfor %}
+                </div>
+              {% else %}
+                <p class="mt-4">You haven't created any destinations yet.</p>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Become A Guide{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="mb-4">Join Our Team of Expert Guides</h2>
+    <p>Are you passionate about travel and sharing your local knowledge? Join our network of experienced tour guides and start earning by showing travelers the beauty of your region.</p>
+
+    <h4 class="mt-5 mb-3">What We Offer</h4>
+    <ul>
+      <li>Flexible schedules based on your availability</li>
+      <li>Access to exclusive trips and private clients</li>
+      <li>Training and ongoing support from our team</li>
+      <li>Competitive pay per tour</li>
+    </ul>
+
+    <h4 class="mt-5 mb-3">Requirements</h4>
+    <ul>
+      <li>Excellent communication skills in English (and other languages a plus)</li>
+      <li>Deep knowledge of your city/country's history, culture, and hidden gems</li>
+      <li>Prior guiding experience preferred but not required</li>
+    </ul>
+
+    <a href="{% url 'guide_registration' %}" class="btn btn-success mt-4">Apply Now</a>
+  </div>
+</section>
+{% endblock %}
