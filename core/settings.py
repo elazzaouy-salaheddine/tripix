@@ -160,17 +160,26 @@ CKEDITOR_RESTRICT_BY_USER = False
 CKEDITOR_REQUIRE_STAFF = False
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
-    "default": {
-        "toolbar": "full",
-        "uploadUrl": "/ckeditor/upload/",
-        "filebrowserUploadUrl": "/ckeditor/upload/",
-        "imageUploadUrl": "/ckeditor/upload/",
-        "startupFocus": True,
-        "height": 300,
-        "width": "100%",
-    },
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ],
+        'height': 300,
+        'width': '100%',
+        'skin': 'moono-lisa',
+        'removePlugins': 'stylesheetparser',
+        'extraPlugins': ','.join([
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+        ]),
+    }
 }
-
 # JAZZMIN ADMIN CONFIG
 JAZZMIN_SETTINGS = {
     "show_ui_builder": True,
