@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static allauth i18n %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 d-none d-md-block">
+          {% include 'dashboard/_sidebar_dashboard.html' %}
+        </div>
+
+                <div class="col-md-9  card shadow-sm py-4">
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+  {% element h2 %}
+  {% trans 'Email Addresses' %}
+  {% endelement %}
+  {% if emailaddresses %}
+    {% element p %}
+    {% trans 'The following email addresses are associated with your account:' %}
+    {% endelement %}
+    {% url 'account_email' as email_url %}
+    {% element form form=form action=email_url method='post' tags='email,list' %}
+    {% slot body %}
+    {% csrf_token %}
+    {% for radio in emailaddress_radios %}
+      {% with emailaddress=radio.emailaddress %}
+        {% element field type='radio' checked=radio.checked name='email' value=emailaddress.email id=radio.id %}
+        {% slot label %}
+        {{ emailaddress.email }}
+        {% if emailaddress.verified %}
+          {% element badge tags='success,email,verified' %}
+          {% translate 'Verified' %}
+          {% endelement %}
+        {% else %}
+          {% element badge tags='warning,email,unverified' %}
+          {% translate 'Unverified' %}
+          {% endelement %}
+        {% endif %}
+        {% if emailaddress.primary %}
+          {% element badge tags='email,primary' %}
+          {% translate 'Primary' %}
+          {% endelement %}
+        {% endif %}
+        {% endslot %}
+        {% endelement %}
+      {% endwith %}
+    {% endfor %}
+    {% endslot %}
+    {% slot actions %}
+<button type="submit" name="action_primary" class="btn btn-primary me-2 mb-2">
+  {% trans 'Make Primary' %}
+</button>
+
+<button type="submit" name="action_send" class="btn btn-secondary me-2 mb-2">
+  {% trans 'Re-send Verification' %}
+</button>
+
+<button type="submit" name="action_remove" class="btn btn-danger mb-2">
+  {% trans 'Remove' %}
+</button>
+
+    {% endslot %}
+    {% endelement %}
+  {% else %}
+    {% include 'account/snippets/warn_no_email.html' %}
+  {% endif %}
+  <div class="my-4">
+  {% if can_add_email %}
+    {% element h2 %}
+    {% trans 'Add Email Address' %}
+    {% endelement %}
+    {% url 'account_email' as action_url %}
+
+<form method="post" action="{{ action_url }}" class="mt-4">
+  {% csrf_token %}
+  <div class="mb-3">
+    {{ form.email.label_tag }}
+    {{ form.email }}
+    {% if form.email.errors %}
+      <div class="invalid-feedback d-block">{{ form.email.errors.as_text }}</div>
+    {% endif %}
+  </div>
+  <button type="submit" name="action_add" class="btn btn-success">
+    {% trans 'Add Email' %}
+  </button>
+</form>
+  {% endif %}
+  </div>
+{% endblock %}
+{% block extra_body %}
+                </div>
+
+          </div>
+    </div>
+  </section>
+{% endblock %}

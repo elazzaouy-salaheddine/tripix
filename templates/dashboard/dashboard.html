@@ -26,26 +26,31 @@
 
               {% if user_destinations %}
                 <h5>Your Created Destinations</h5>
-
                 <div class="row g-4 mt-3">
                   {% for destination in user_destinations %}
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-12 col-lg-12">
                       <div class="card h-100 shadow-sm">
-                        {% if destination.image %}
-                          <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" />
-                        {% endif %}
                         <div class="card-body">
                           <h5 class="card-title">{{ destination.name }}</h5>
                           <p class="card-text text-muted small">{{ destination.location }}</p>
-                          <a href="{% url 'destination-detail' slug=destination.slug %}" class="btn btn-sm btn-primary">View</a>
-                          <a href="{% url 'destination-delete' slug=destination.slug %}" class="btn btn-sm btn-primary">delete</a>
+
+                          {# Enquiry Stats #}
+                          <div class="mb-3">
+                            <strong>Enquiries:</strong> {{ destination.enquiries_count }}<br />
+                            <strong>Total Enquiry Value:</strong> ${{ destination.total_enquiry_value|default:'0.00' }}
+                          </div>
+
+                          <span>
+                            <a href="{% url 'destination-detail' slug=destination.slug %}" class="btn btn-sm btn-primary my-3">View</a>
+                            <a href="{% url 'destination-delete' slug=destination.slug %}" class="btn btn-sm btn-danger my-3">Delete</a>
+                          </span>
                         </div>
                       </div>
                     </div>
                   {% endfor %}
                 </div>
               {% else %}
-                <p class="mt-4">You haven't created any destinations yet.</p>
+                <p>You have not created any destinations yet.</p>
               {% endif %}
             </div>
           </div>

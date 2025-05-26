@@ -13,6 +13,7 @@ from destinations.models import (
     RelatedTrip,
     TourMap,
 )
+from django.db.models import Count, Sum
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.core.exceptions import PermissionDenied
 from destinations.models import Destination, Enquiry
@@ -46,9 +47,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["user"] = self.request.user
-        context["user_destinations"] = Destination.objects.filter(
-            created_by=self.request.user
-        ).order_by("-created_at")
+        context["user_destinations"] = Destination.objects.filter(created_by=self.request.user).annotate(
+            enquiries_count=Count('enquiry'),
+            total_enquiry_value=Sum('enquiry__NoofAdults') * Sum('enquiry__destination__price')
+            ).order_by("-created_at")
 
         return context
 
@@ -63,9 +65,11 @@ class MyEnquiryView(LoginRequiredMixin, ListView):
     model = Enquiry
     template_name = "dashboard/my_bookings.html"
     context_object_name = "bookings"
+    paginate_by = 6
 
     def get_queryset(self):
         # Get all destinations created by the current user
+
         user_destinations = Destination.objects.filter(created_by=self.request.user)
 
         # Get all bookings/enquiries for those destinations

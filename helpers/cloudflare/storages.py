@@ -1,4 +1,5 @@
 from storages.backends.s3 import S3Storage
+from django.conf import settings
 
 
 class StaticFilesStorage(S3Storage):
@@ -15,4 +16,4 @@ class MediaFilesStorage(S3Storage):
     helpers.cloudflare.storages.MediaFilesStorage
     This class is used to store media files in a Cloudflare R2 bucket.
     """
-    location = "media"
+    location = 'media'

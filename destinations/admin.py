@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Destination, Tag, Itinerary, CostIncludeExclude, FAQ, RelatedTrip, TourMap, Enquiry, TopDestination
+from .models import Destination, Tag, Itinerary, CostIncludeExclude, FAQ, RelatedTrip, TourMap, Enquiry, TopDestination, GalleryImage
 from django.utils.html import format_html
 
 
@@ -33,6 +33,11 @@ class TourMapInline(admin.StackedInline):
     verbose_name_plural = 'Tour Map'
     fields = ('map_link',)
 
+class GalleryImageInline(admin.TabularInline):
+    model = GalleryImage
+    extra = 1
+    max_num = 10  # Limits inline formset to 10 images
+
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
@@ -62,6 +67,7 @@ class DestinationAdmin(admin.ModelAdmin):
         ItineraryInline,
         CostIncludeExcludeInline,
         FAQInline,
+        GalleryImageInline,
         RelatedTripInline,
         TourMapInline,
     ]

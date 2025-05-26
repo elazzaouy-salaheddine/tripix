@@ -1,10 +1,76 @@
-{% extends "account/base_generic.html" %}
+{% extends 'account/authe_base.html' %}
+{% load static %}
+{% block authentication %}
+  <div class="page">
+    <div class="container container-tight py-4">
+      <div class="text-center mb-4">
+        <a href="{% url 'home' %}" class="navbar-brand navbar-brand-autodark"><img src="{% static 'img/logo-v2.svg' %}" alt="Tabler" class="navbar-brand-image" /></a>
+      </div>
+      <div class="card card-md">
+        <div class="card-body">
+          <h2 class="h2 text-center mb-4">Login to your account</h2>
+          <form action="{% url 'account_login' %}" method="post" autocomplete="off" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Email address</label>
+              <input type="email" class="form-control" id="{{ form.login.id_for_label }}" name="login"
+                     placeholder="Your email" autocomplete="off" required />
+            </div>
 
-{% block title %}Log In{% endblock title %} 
-{% block content %}
-    <form method="post">
-      {% csrf_token %} {{ form }}
-      <button class="btn btn-primary" type="submit">Log In</button>
-      <a class="btn btn-secondary" href="/accounts/signup">Sign Up instead</a>
-    </form>
-    {% endblock content %}
+          <div class="mb-2">
+            <label class="form-label" for="{{ form.password.id_for_label }}">
+              Password
+              <span class="form-label-description">
+                <a href="{% url 'account_reset_password' %}" class="text-orange">I forgot password</a>
+              </span>
+            </label>
+            <div class="input-group input-group-flat">
+              <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="password"
+                     placeholder="Your password" autocomplete="off" required>
+              <span class="input-group-text">
+                <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-1">
+                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                  </svg>
+                </a>
+              </span>
+            </div>
+            {{ form.password.errors }}
+          </div>
+
+            <div class="form-footer">
+              <button type="submit" class="btn btn-6 btn-warning w-100">Sign in</button>
+            </div>
+          </form>
+        </div>
+        <div class="hr-text">or</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <button class="btn">
+                <a href="">
+                  <span class="icon social social-app-google"></span>
+                  Sign in with Google
+                </a>
+              </button>
+            </div>
+            <div class="col">
+              <button class="btn">
+                <a href="">
+                  <span class="icon social social-app-facebook"></span>
+                  Sign in with Facebook
+                </a>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-secondary mt-3">
+        Don't have account yet? <a href="{% url 'account_signup' %}" tabindex="-1" class="text-orange">Sign up</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

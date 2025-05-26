@@ -3,6 +3,8 @@ from django.utils.text import slugify
 import uuid
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from ckeditor.fields import RichTextField
+from django.core.exceptions import ValidationError
 
 
 User = get_user_model()
@@ -17,19 +19,19 @@ class Tag(models.Model):
 
 # Destination Model
 class Destination(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='destinations/', blank=True, null=True)
     tags = models.ManyToManyField(Tag, related_name='destinations')  # ManyToMany relation
     slug = models.SlugField(unique=True, blank=True, null=True)
-    location = models.CharField(max_length=200, blank=True, null=True)
-    accommodation = models.CharField(max_length=200, blank=True, null=True)
-    best_season = models.CharField(max_length=200, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    accommodation = models.CharField(max_length=255, blank=True, null=True)
+    best_season = models.CharField(max_length=255, blank=True, null=True)
     duration_days = models.IntegerField(blank=True, null=True)
     elevation = models.CharField(max_length=100, blank=True, null=True)
-    tour_types = models.CharField(max_length=200, blank=True, null=True)
+    tour_types = models.CharField(max_length=255, blank=True, null=True)
     old_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    overview = models.TextField(blank=True, null=True)
+    overview = RichTextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=True)
@@ -55,7 +57,7 @@ class Itinerary(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, null=True, blank=True)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='itineraries')
     day = models.PositiveIntegerField()
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=255)
     description = models.TextField()
 
     def __str__(self):
@@ -85,7 +87,7 @@ class FAQ(models.Model):
 # Related Trip Model
 class RelatedTrip(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='related_trips')
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=255)
     image = models.URLField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
@@ -111,7 +113,7 @@ class Enquiry(models.Model):
     Country = models.CharField(max_length=100, blank=True, null=True)
     NoofAdults = models.IntegerField(blank=True, null=True)
     NoofChildren = models.IntegerField(blank=True, null=True)
-    EnquirySubject = models.CharField(max_length=200, blank=True, null=True)
+    EnquirySubject = models.CharField(max_length=255, blank=True, null=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -122,7 +124,7 @@ class Enquiry(models.Model):
 class TopDestination(models.Model):
     destination = models.ForeignKey('Destination', on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0, blank=True)
-    label = models.CharField(max_length=50, blank=True, help_text="e.g., Best Seller, Popular")
+    label = models.CharField(max_length=255, blank=True, help_text="e.g., Best Seller, Popular")
 
     class Meta:
         ordering = ['order']
@@ -132,3 +134,16 @@ class TopDestination(models.Model):
     def __str__(self):
         return f"{self.destination.name} - {self.label or 'Featured'}"
 
+class GalleryImage(models.Model):
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='gallery_images')
+    image = models.ImageField(upload_to='destination_galleries/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image for {self.destination.name}"
+
+    def save(self, *args, **kwargs):
+        # Check if adding this image exceeds 10
+        if self.destination.gallery_images.count() >= 10 and not self.pk:
+            raise ValidationError("A destination cannot have more than 10 images in the gallery.")
+        super().save(*args, **kwargs)
