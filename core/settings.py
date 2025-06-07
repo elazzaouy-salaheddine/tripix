@@ -20,7 +20,7 @@ def str_to_bool(value):
 
 # SECURITY SETTINGS
 SECRET_KEY = config("SECRET_KEY")
-DEBUG = True 
+DEBUG = False 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 # SITE CONFIGURATION
@@ -108,28 +108,12 @@ TEMPLATES = [
 ]
 
 # DATABASE CONFIGURATION
-if DEBUG is False:
-    # Use development database (PostgreSQL local)
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "tripix_local",
-            "USER": "postgres",
-            "PASSWORD": "root",
-            "HOST": "127.0.0.1",
-            "PORT": 5432,
-        },
-        "OPTIONS": {
-            "CONN_MAX_AGE": 600,  # 10 minutes
-            'connect_timeout': 3,
-        }
-    }
-else:
+
     # Use production database from DATABASE_URL
-    from urllib.parse import urlparse
-    DATABASE_URL = config("DATABASE_URL")
-    parsed_db_url = urlparse(DATABASE_URL)
-    DATABASES = {
+from urllib.parse import urlparse
+DATABASE_URL = config("DATABASE_URL")
+parsed_db_url = urlparse(DATABASE_URL)
+DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
             "NAME": parsed_db_url.path.lstrip("/"),
