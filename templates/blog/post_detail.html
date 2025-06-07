@@ -79,15 +79,12 @@
                     {% comment %} #TODO: add dynamic tags {% endcomment %}
                     <div class="block-tag-cloud">
                       <span class="title">Tags:</span>
-                      <a href="blog-details.html" class="tag-cloud-link"
-                        >Adventure,</a
+                      {% for tag in post.tags.all %}
+                      <a href="{% url 'posts-by-tag' slug=tag.slug %}" class="tag-cloud-link"
+                        >{{ tag.name }}</a
                       >
-                      <a href="blog-details.html" class="tag-cloud-link"
-                        >hiking,</a
-                      >
-                      <a href="blog-details.html" class="tag-cloud-link"
-                        >Trekking</a
-                      >
+                      {% endfor %}
+
                     </div>
               
                   </div>
@@ -111,14 +108,22 @@
                 </div>
                 <div class="post-pagination">
                   {% comment %} #TODO:  add next and previous posts {% endcomment %}
-                  <a href="blog.html" class="post-pagi-box prev">
+                
+                  {% if prev_post %}
+                  <a href="{% url 'post-detail' slug=prev_post.slug %}" class="post-pagi-box prev">
                     <i class="fa-regular fa-arrow-left"></i>
-                    previous post
+                    {{prev_post.title}}
                   </a>
-                  <a href="blog.html" class="post-pagi-box next">
-                    next post
+                  {% endif %}
+
+                  {% if next_post %}
+                  <a href="{% url 'post-detail' slug=next_post.slug %}" class="post-pagi-box next">
+                    {{next_post.title}}
                     <i class="fa-regular fa-arrow-right"></i>
                   </a>
+                  {% endif %}
+
+
                 </div>
 
                 <div class="vs-comments-wrap">
@@ -251,33 +256,21 @@
                 <div class="widget widget_recent-posts">
                   <h5 class="widget_title title-shep">related posts</h5>
                   <div class="recent-post-wrap">
-                              {% for related in related_posts %}
+                    {% for post in latest_posts_sidebar %}
 
                     <div class="recent-post">
                       
-                      {% if related.image %}
-                        
-                        
-                      <div class="media-img">
-                        <a href="{{ related.get_absolute_url }}">
-                          <img
-                            src="{{ related.image.url }}"
-                            alt="{{related.title}}"
-                          />
-                        </a>
-                      </div>
-                      {% endif %}
 
                       <div class="media-body">
                         <div class="recent-post-meta">
-                          <a href="{{ related.get_absolute_url }}">
+                          <a href="{{ post.get_absolute_url }}">
                             <i class="fa-solid fa-calendar"></i>
-                            {{ related.created_at|date:"M d, Y" }}
+                            {{ post.created_at|date:"M d, Y" }}
                           </a>
                         </div>
                         <h6 class="post-title">
-                          <a class="text-inherit" href="{{ related.get_absolute_url }}"
-                            >{{ related.title }}</a
+                          <a class="text-inherit" href="{{ post.get_absolute_url }}"
+                            >{{ post.title }}</a
                           >
                         </h6>
                       </div>
@@ -314,95 +307,7 @@
                   </div>
                 </div>
                 {% endif %}
-                <div class="widget">
-                  <h5 class="widget_title title-shep">Follow Us</h5>
-                  <div class="sidebar-gallery">
-                    <div class="gallery-box">
-                      <div class="post-thumb">
-                        <img
-                          src="assets/img/instagram/insta-post-1-1.png"
-                          alt="instagram"
-                          class="w-100"
-                        />
-                      </div>
-                      <a
-                        href="assets/img/instagram/insta-post-1-1.png"
-                        title="Gallery-1"
-                        class=""
-                      ></a>
-                    </div>
-                    <div class="gallery-box">
-                      <div class="post-thumb">
-                        <img
-                          src="assets/img/instagram/insta-post-1-2.png"
-                          alt="instagram"
-                          class="w-100"
-                        />
-                      </div>
-                      <a
-                        href="assets/img/instagram/insta-post-1-2.png"
-                        title="Gallery-1"
-                        class=""
-                      ></a>
-                    </div>
-                    <div class="gallery-box">
-                      <div class="post-thumb">
-                        <img
-                          src="assets/img/instagram/insta-post-1-3.png"
-                          alt="instagram"
-                          class="w-100"
-                        />
-                      </div>
-                      <a
-                        href="assets/img/instagram/insta-post-1-3.png"
-                        title="Gallery-1"
-                        class=""
-                      ></a>
-                    </div>
-                    <div class="gallery-box">
-                      <div class="post-thumb">
-                        <img
-                          src="assets/img/instagram/insta-post-1-4.png"
-                          alt="instagram"
-                          class="w-100"
-                        />
-                      </div>
-                      <a
-                        href="assets/img/instagram/insta-post-1-4.png"
-                        title="Gallery-1"
-                        class=""
-                      ></a>
-                    </div>
-                    <div class="gallery-box">
-                      <div class="post-thumb">
-                        <img
-                          src="assets/img/instagram/insta-post-1-5.png"
-                          alt="instagram"
-                          class="w-100"
-                        />
-                      </div>
-                      <a
-                        href="assets/img/instagram/insta-post-1-5.png"
-                        title="Gallery-1"
-                        class=""
-                      ></a>
-                    </div>
-                    <div class="gallery-box">
-                      <div class="post-thumb">
-                        <img
-                          src="assets/img/instagram/insta-post-1-1.png"
-                          alt="instagram"
-                          class="w-100"
-                        />
-                      </div>
-                      <a
-                        href="assets/img/instagram/insta-post-1-1.png"
-                        title="Gallery-1"
-                        class=""
-                      ></a>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

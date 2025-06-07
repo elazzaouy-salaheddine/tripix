@@ -9,6 +9,17 @@
       {% block title %}Tripix - Tours & Travels HTML5 Template | Vecuro{% endblock %}
     </title>
 
+        <meta property="og:title" content="{{ destination.name }}">
+        <meta property="og:description" content="{{ destination.overview|striptags|truncatewords:30 }}">
+        
+        {% if destination.image %}
+            <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ destination.image.url }}">
+        {% else %}
+            <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/default-destination.jpg' % }}">
+        {% endif %}
+        
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        <meta property="og:type" content="website">
     <meta
       name="description"
       content="{% block meta_description %}Tripix - Tours & Travels HTML5 Template, a stunning and feature-rich solution for travel agencies and tour operators.{% endblock %}"

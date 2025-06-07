@@ -247,6 +247,58 @@
                   </div>
                 </div>
 
+                <!-- Share Buttons -->
+<div class="share-buttons mt-4">
+  <h6>Share this destination:</h6>
+  <div class="d-flex gap-3 flex-wrap">
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
+         target="_blank"
+         class="btn btn-primary btn-sm">
+          <i class="fab fa-facebook-f me-1"></i> Share on Facebook
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://api.whatsapp.com/send?text={{ destination.name }} - {{ request.build_absolute_uri }}"
+         target="_blank"
+         class="btn btn-success btn-sm">
+          <i class="fab fa-whatsapp me-1"></i> Share on WhatsApp
+      </a>
+
+      <!-- Twitter -->
+      <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ destination.name }}"
+         target="_blank"
+         class="btn btn-info btn-sm">
+          <i class="fab fa-twitter me-1"></i> Tweet
+      </a>
+
+      <!-- Copy Link -->
+      <button id="copyLinkBtn" class="btn btn-outline-secondary btn-sm" type="button">
+          <i class="fas fa-link me-1"></i> Copy Link
+      </button>
+  </div>
+  <div id="copyStatus" class="text-success mt-2" style="display: none;">Link copied!</div>
+</div>
+
+<!-- JS for Copy Button -->
+<script>
+document.getElementById("copyLinkBtn").addEventListener("click", function () {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(function () {
+      const status = document.getElementById("copyStatus");
+      status.style.display = "block";
+      setTimeout(() => status.style.display = "none", 2000);
+  }, function (err) {
+      alert("Could not copy URL: ", err);
+  });
+});
+</script>
+
+
+
+
+
                 <div id="review" class="destination-request tab-content">
                   <h4 class="title">Send Request</h4>
                   <h5 class="sub-title">You can send your enquiry via the form below.</h5>

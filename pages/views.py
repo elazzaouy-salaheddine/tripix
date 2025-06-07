@@ -2,7 +2,10 @@ from django.views.generic import TemplateView
 from blog.models import Post
 from destinations.models import Destination, TopDestination
 from meta.views import MetadataMixin
-
+from .models import GuideOfTheYear, ContactInfo
+from django.views.generic.edit import FormView
+from django.urls import reverse_lazy
+from .forms import ContactForm
 
 
 class HomeView(TemplateView):
@@ -34,8 +37,11 @@ class AboutView(TemplateView):
         context['description'] = 'Learn more about our company and mission.'
         return context
 
-class ContactView(TemplateView):
-    template_name = 'pages/contact.html'  # specifies the template to use
+class ContactView(FormView):
+    template_name = 'pages/contact.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('contact')  # Redirect to same page or another success page
+
     meta = {
         'title': 'Contact Us - Tripix Travel',
         'description': 'Learn more about our mission and values at Tripix.',
@@ -43,12 +49,26 @@ class ContactView(TemplateView):
         'twitter_title': 'Contact | Tripix',
         'keywords': ['travel', 'contact us', 'Tripix', 'tour guide'],
     }
-    # Optional: Add context data
+
+    def form_valid(self, form):
+        form.save()  # Save the ContactMessage
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Contact Us'
-        context['contact_info'] = 'Feel free to reach out to us!'
+        # Load dynamic contact data (assumes only one ContactInfo entry)
+        try:
+            contact_data = ContactInfo.objects.prefetch_related(
+                'phone_numbers', 'emails', 'social_links'
+            ).first()
+        except ContactInfo.DoesNotExist:
+            contact_data = None
+
+        context['contact_data'] = contact_data
         return context
+
+        
 
 class ServicesView(TemplateView):
     template_name = 'pages/services.html'  # specifies the template to use
@@ -158,6 +178,10 @@ class GuideOfTheYearView(TemplateView):
         'twitter_title': 'About | Tripix',
         'keywords': ['travel', 'about us', 'Tripix', 'tour guide'],
     }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['guide_of_the_year'] = GuideOfTheYear.objects.all()
+        return context
 class GuideRegistrationView(TemplateView):
     template_name = "pages/guide_registration.html"
     meta = {

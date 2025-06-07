@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "destinations",
     "blog",
     "users",
+    "emailmarketing",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -102,6 +103,11 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'blog.context_processors.latest_posts',  # ← add this line
+                'blog.context_processors.category_list',  # ← Add this line
+                'blog.context_processors.tag_list',  # ← Add this line
+
+
             ],
         },
     },

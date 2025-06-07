@@ -1,4 +1,6 @@
 {% load static %}
+{% load logo_tags %}
+
 <header class="vs-header layout2">
   <!-- Main Menu Area -->
   <div class="sticky-wrapper position-relative">
@@ -53,13 +55,13 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
     <div class="header-bottom">
       <div class="container custom-container">
         <div class="row justify-content-between align-items-center">
           <div class="col-xl-3 col-lg-auto">
             <div class="header-logo d-flex justify-content-between align-items-center">
-              <a href="{% url 'home' %}"><img src="{% static 'img/logo-v2.svg' %}" alt="Luxrio" class="logo" /></a>
+              <a href="{% url 'home' %}"><img src="{% get_logo 'main' %}" alt="Luxrio" class="logo" /></a>
               <div class="d-flex align-items-center gap-3">
                 <button class="wc-link2 searchBoxTggler d-lg-none">
                   <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">

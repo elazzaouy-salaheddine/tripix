@@ -20,7 +20,7 @@ class PostListView(ListView):
 
     def get_queryset(self):
         return Post.objects.filter(published=True).order_by('-created_at')
-
+    
 
 class PostDetailView(DetailView):
     model = Post
@@ -34,6 +34,17 @@ class PostDetailView(DetailView):
         ).exclude(id=self.object.id).distinct()[:3]
         context['comments'] = self.object.comments.filter(approved=True)
         context['form'] = CommentForm()
+
+        # ✅ Previous and Next Post
+        current_post = self.object
+
+        # Get next and previous post by created_at (you can also use published_at if you have it)
+        next_post = Post.objects.filter(created_at__gt=current_post.created_at, published=True).order_by('created_at').first()
+        prev_post = Post.objects.filter(created_at__lt=current_post.created_at, published=True).order_by('-created_at').first()
+
+        context['next_post'] = next_post
+        context['prev_post'] = prev_post
+
         return context
 
     def post(self, request, *args, **kwargs):
