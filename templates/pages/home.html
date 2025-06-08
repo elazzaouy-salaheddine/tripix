@@ -7,7 +7,7 @@
 
 {% block content %}
   <!-- ================= Hero Area ================= -->
-  <section class="z-index-common hero-layout1 overflow-clip" data-bg-src="{% static 'img/hero/hero-layout1-bg.jpg' %}">
+  {% comment %} <section class="z-index-common hero-layout1 overflow-clip" data-bg-src="{% static 'img/hero/hero-layout1-bg.jpg' %}">
     <div class="container-fluid p-xl-0">
       <div class="row justify-content-center">
         <div class="col-xl-10 col-xxl-7">
@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-  </section> 
+  </section>  {% endcomment %}
   <!-- ================= Hero Area end ================= -->
 
   <!-- ================= Destination Area start ================= -->
@@ -616,7 +616,7 @@
         {% endfor %}
       </div>
 
-
+{% comment %} 
       <div class="row">
         <div class="col-12">
           <div class="swiper partner-slider space-top">
@@ -654,7 +654,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> {% endcomment %}
 
       
     </div>
