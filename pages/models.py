@@ -99,3 +99,20 @@ class SocialLink(models.Model):
 
     def __str__(self):
         return f"{self.platform.title()} - {self.url}"
+    
+
+class Partner(models.Model):
+    name = models.CharField(max_length=100, blank=True)
+    logo = models.ImageField(upload_to='partners/logos/')
+    website = models.URLField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0, help_text="Order for display in the slider")
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = "Partner"
+        verbose_name_plural = "Partners"
+
+    def __str__(self):
+        return self.name or "Partner #{}".format(self.id)
+

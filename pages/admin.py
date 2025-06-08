@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import ContactMessage, ProjectLogo, GuideOfTheYear, ContactInfo, PhoneNumber, EmailAddress, SocialLink
+from .models import (ContactMessage, ProjectLogo, GuideOfTheYear, ContactInfo, PhoneNumber,
+                      EmailAddress, SocialLink, Partner)
 from django.utils.html import format_html
 
 
@@ -50,3 +51,10 @@ class SocialLinkInline(admin.TabularInline):
 @admin.register(ContactInfo)
 class ContactInfoAdmin(admin.ModelAdmin):
     inlines = [PhoneNumberInline, EmailAddressInline, SocialLinkInline]
+
+
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'website', 'is_active', 'order')
+    list_editable = ('is_active', 'order')
