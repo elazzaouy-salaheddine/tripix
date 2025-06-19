@@ -135,6 +135,17 @@
                     <h6 class="info-title">{{ destination.tour_types }}</h6>
                   </div>
                 </div>
+
+                {% if destination.created_by.profile.organization_name %}
+                  <p>
+                    Organization:
+                    <a href="{% url 'profile-detail' slug=destination.created_by.profile.slug %}">
+                      {{ destination.created_by.profile.organization_name }}
+                    </a>
+                  </p>
+                {% endif %}
+
+
                 <div class="destination-info-tabs">
                   <ul class="custom-ul">
                     <li class="current">
@@ -248,7 +259,7 @@
                 </div>
 
                 <!-- Share Buttons -->
-<div class="share-buttons mt-4">
+{% comment %} <div class="share-buttons mt-4">
   <h6>Share this destination:</h6>
   <div class="d-flex gap-3 flex-wrap">
 
@@ -279,7 +290,7 @@
       </button>
   </div>
   <div id="copyStatus" class="text-success mt-2" style="display: none;">Link copied!</div>
-</div>
+</div> {% endcomment %}
 
 <!-- JS for Copy Button -->
 <script>
