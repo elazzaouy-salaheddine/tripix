@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb Partial -->
+{% include "blog/partials/_breadcrumb.html" %}
+
+<!-- Main Blog Content -->
+<section class="vs-blog-wrapper space">
+  <div class="container">
+    <div class="row gx-3 g-5">
+      <div class="col-lg-8">
+        {% block blog_content %}{% endblock %}
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        {% include "blog/partials/_sidebar.html" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

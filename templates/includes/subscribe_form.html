@@ -1,0 +1,21 @@
+<!-- templates/includes/subscribe_form.html -->
+<div class="newsletter">
+    <form method="post" action="{% url 'subscribe' %}" class="w100">
+        {% csrf_token %}
+        {{ form.email }}
+        <button type="submit" class="text-uppercase text-color-5">
+            <i class="fa-solid fa-angles-right"></i>
+            <span>Subscribe now</span>
+        </button>
+    </form>
+</div>
+
+{% if messages %}
+<div class="mt-2">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

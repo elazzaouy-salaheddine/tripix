@@ -7,6 +7,12 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     organization_name = models.CharField(max_length=255, null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True, null=True) 
+    organization_logo = models.FileField(
+        upload_to='organization_logos/',
+        blank=True,
+        null=True,
+        help_text="Upload SVG logo for best quality"
+    )
     def __str__(self):
         return f"{self.user.username}'s Profile"
     

@@ -135,16 +135,31 @@
                     <h6 class="info-title">{{ destination.tour_types }}</h6>
                   </div>
                 </div>
-
+                <hr />
                 {% if destination.created_by.profile.organization_name %}
-                  <p>
-                    Organization:
-                    <a href="{% url 'profile-detail' slug=destination.created_by.profile.slug %}">
-                      {{ destination.created_by.profile.organization_name }}
-                    </a>
-                  </p>
+                  <div class="trip-info-box organization-info">
+                    <div class="header">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="12" viewBox="0 0 19 12" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.9653 5.18974L10.3742 10.3719L7.04492 2.88093L8.58721 0.586893C8.94166 0.0596826 9.52145 0.0672983 9.87077 0.586893L12.9653 5.18974Z" fill="currentColor" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.13764 2.96876C5.4814 2.42341 6.03475 2.41709 6.38249 2.96876L11.1659 10.5575C11.5096 11.1028 11.2703 11.5449 10.6323 11.5449H0.887847C0.249391 11.5449 0.00650534 11.1092 0.354243 10.5575L5.13764 2.96876Z" fill="currentColor" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.1973 5.33565C13.5566 4.80106 14.1353 4.79517 14.4986 5.33565L18.0219 10.5769C18.3812 11.1115 18.1538 11.5449 17.5278 11.5449H10.1681C9.53585 11.5449 9.31066 11.1174 9.67398 10.5769L13.1973 5.33565Z" fill="currentColor" />
+                      </svg>
+                      <span>Organization</span>
+                    </div>
+                    <div class="info-content d-flex align-items-center gap-2">
+                      {% if destination.created_by.profile.organization_logo %}
+                        <div class="organization-logo" style="width: 30px; height: 30px;">
+                          {% if destination.created_by.profile.organization_logo.url|lower|slice:'-4:' == '.svg' %}
+                            <img src="{{ destination.created_by.profile.organization_logo.url }}" alt="{{ destination.created_by.profile.organization_name }} logo" class="img-fluid" style="max-height: 100%; width: auto;" />
+                          {% else %}
+                            <img src="{{ destination.created_by.profile.organization_logo.url }}" alt="{{ destination.created_by.profile.organization_name }} logo" width="30" height="30" />
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                      <h6 class="info-title mb-0"><a href="{% url 'profile-detail' slug=destination.created_by.profile.slug %}" class="text-reset text-decoration-none">{{ destination.created_by.profile.organization_name }}</a></h6>
+                    </div>
+                  </div>
                 {% endif %}
-
 
                 <div class="destination-info-tabs">
                   <ul class="custom-ul">
@@ -259,56 +274,40 @@
                 </div>
 
                 <!-- Share Buttons -->
-{% comment %} <div class="share-buttons mt-4">
-  <h6>Share this destination:</h6>
-  <div class="d-flex gap-3 flex-wrap">
+                {% comment %} <div class="share-buttons mt-4">
+                  <h6>Share this destination:</h6>
+                  <div class="d-flex gap-3 flex-wrap">
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-primary btn-sm"><i class="fab fa-facebook-f me-1"></i> Share on Facebook</a>
 
-      <!-- Facebook -->
-      <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
-         target="_blank"
-         class="btn btn-primary btn-sm">
-          <i class="fab fa-facebook-f me-1"></i> Share on Facebook
-      </a>
+                    <!-- WhatsApp -->
+                    <a href="https://api.whatsapp.com/send?text={{ destination.name }} - {{ request.build_absolute_uri }}" target="_blank" class="btn btn-success btn-sm"><i class="fab fa-whatsapp me-1"></i> Share on WhatsApp</a>
 
-      <!-- WhatsApp -->
-      <a href="https://api.whatsapp.com/send?text={{ destination.name }} - {{ request.build_absolute_uri }}"
-         target="_blank"
-         class="btn btn-success btn-sm">
-          <i class="fab fa-whatsapp me-1"></i> Share on WhatsApp
-      </a>
+                    <!-- Twitter -->
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ destination.name }}" target="_blank" class="btn btn-info btn-sm"><i class="fab fa-twitter me-1"></i> Tweet</a>
 
-      <!-- Twitter -->
-      <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ destination.name }}"
-         target="_blank"
-         class="btn btn-info btn-sm">
-          <i class="fab fa-twitter me-1"></i> Tweet
-      </a>
+                    <!-- Copy Link -->
+                    <button id="copyLinkBtn" class="btn btn-outline-secondary btn-sm" type="button"><i class="fas fa-link me-1"></i> Copy Link</button>
+                  </div>
+                  <div id="copyStatus" class="text-success mt-2" style="display: none;">Link copied!</div>
+                </div> {% endcomment %}
 
-      <!-- Copy Link -->
-      <button id="copyLinkBtn" class="btn btn-outline-secondary btn-sm" type="button">
-          <i class="fas fa-link me-1"></i> Copy Link
-      </button>
-  </div>
-  <div id="copyStatus" class="text-success mt-2" style="display: none;">Link copied!</div>
-</div> {% endcomment %}
-
-<!-- JS for Copy Button -->
-<script>
-document.getElementById("copyLinkBtn").addEventListener("click", function () {
-  const url = window.location.href;
-  navigator.clipboard.writeText(url).then(function () {
-      const status = document.getElementById("copyStatus");
-      status.style.display = "block";
-      setTimeout(() => status.style.display = "none", 2000);
-  }, function (err) {
-      alert("Could not copy URL: ", err);
-  });
-});
-</script>
-
-
-
-
+                <!-- JS for Copy Button -->
+                <script>
+                  document.getElementById('copyLinkBtn').addEventListener('click', function () {
+                    const url = window.location.href
+                    navigator.clipboard.writeText(url).then(
+                      function () {
+                        const status = document.getElementById('copyStatus')
+                        status.style.display = 'block'
+                        setTimeout(() => (status.style.display = 'none'), 2000)
+                      },
+                      function (err) {
+                        alert('Could not copy URL: ', err)
+                      }
+                    )
+                  })
+                </script>
 
                 <div id="review" class="destination-request tab-content">
                   <h4 class="title">Send Request</h4>

@@ -28,7 +28,7 @@
               <div class="breadcrumb-menu">
                 <ul class="custom-ul">
                   <li>
-                    <a href="index.html">Home</a>
+                    <a href="{% url 'home' %}">Home</a>
                   </li>
                   <li>our blog</li>
                 </ul>
@@ -66,7 +66,7 @@
                     <div class="blog-content">
                       <div class="blog-meta">
                         <span class="blog-author"
-                          >Written by:<a href="blog.html">{{post.author}}</a></span
+                          >Written by:<a href="{% url 'author-detail' slug=post.author %}">{{post.author}}</a></span
                         >
                         <span class="blog-date">
                           <i class="fa-regular fa-calendar-days"></i>
@@ -97,9 +97,11 @@
             <div class="col-lg-4">
               <div class="sidebar-area">
                 <div class="widget widget_search">
+
                   <h5 class="widget_title title-shep">Search</h5>
-                  <form class="search-form"  action="{% url 'post-search' %}" method="get">
-                    <input type="text" name="q" placeholder="Search here..." value="{{ request.GET.q }}" required />
+
+                  <form class="search-form" method="get" action="{% url 'post-search' %}">
+                    <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}" required />
                     <button type="submit"><i class="far fa-search"></i></button>
                   </form>
 
@@ -114,7 +116,7 @@
                       
                       <div class="media-body">
                         <div class="recent-post-meta">
-                          <a href="blog.html">
+                          <a href="{{ post.get_absolute_url }}">
                             <i class="fa-solid fa-calendar"></i>
                             {{post.created_at|date:"F j, Y"}}
                           </a>

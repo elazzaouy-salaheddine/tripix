@@ -1,10 +1,62 @@
-
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{title}}{% endblock %}
+{% block title %}{{ meta_title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block og_description %}{{ og_description }}{% endblock %}
+{% block twitter_title %}{{ twitter_title }}{% endblock %}
+{% block keywords %}{{ keywords }}{% endblock %}
 
 {% block content %}
-
+  <main class="main">
+    <!-- ================= Breadcrumb Area start ================= -->
+    <section class="vs-breadcrumb" data-bg-src=" {% static 'img/bg/breadcrumb-bg-2.png' %} ">
+      <img src="{% static 'img/icons/cloud.png' %}" alt="vs-breadcrumb-icon" class="vs-breadcrumb-icon-1 animate-parachute" />
+      <img src="{% static 'img/icons/ballon-sclation.png' %}" alt="vs-breadcrumb-icon" class="vs-breadcrumb-icon-2 animate-parachute" />
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-12">
+            <div class="breadcrumb-content">
+              <h1 class="breadcrumb-title">{{ page.title }}</h1>
+            </div>
+            <div class="breadcrumb-menu">
+              <ul class="custom-ul">
+                <li>
+                  <a href="{% url 'home' %}">Home</a>
+                </li>
+                <li>{{ page.title }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ================= Breadcrumb Area end ================= -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-12 mx-auto">
+  
+            
+            {% if page.version %}
+            <div class="alert alert-info">
+                <strong>Version:</strong> {{ page.version }} | Last updated: {{ page.last_updated|date:"F j, Y" }}
+            </div>
+            {% endif %}
+            
+            <div class="page-content">
+                {{ page.content|safe }}
+            </div>
+            
+            {% if page.contact_email %}
+            <div class="mt-5 p-4 bg-light rounded">
+                <h3>Contact Our Data Controller</h3>
+                <p>For privacy-related inquiries, please contact:</p>
+                <p><a href="mailto:{{ page.contact_email }}">{{ page.contact_email }}</a></p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</main>
 
 {% endblock %}

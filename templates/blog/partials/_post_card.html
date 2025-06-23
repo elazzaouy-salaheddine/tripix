@@ -1,0 +1,27 @@
+<div class="vs-blog vs-blog-box3">
+  {% if post.image %}
+  <div class="blog-img">
+    <a href="{{ post.get_absolute_url }}">
+      <img class="img" src="{{ post.image.url }}" alt="{{post.title}}" />
+    </a>
+  </div>
+  {% endif %}
+  <div class="blog-content">
+    <div class="blog-meta">
+      <span class="blog-author">Written by: <a href="{% url 'author-detail' slug=post.author %}">{{post.author}}</a></span>
+      <span class="blog-date">
+        <i class="fa-regular fa-calendar-days"></i>
+        {{ post.created_at|date:"F j, Y" }}
+      </span>
+    </div>
+    <h3 class="blog-title">
+      <a href="{{ post.get_absolute_url }}">{{post.title}}</a>
+    </h3>
+    <p class="blog-text">{{post.excerpt}}</p>
+    <div class="blog-footer">
+      <a href="{{ post.get_absolute_url }}" class="blog-link">
+        read more <i class="fa-sharp fa-regular fa-angles-right"></i>
+      </a>
+    </div>
+  </div>
+</div>

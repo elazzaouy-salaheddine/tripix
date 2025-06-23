@@ -1,0 +1,6 @@
+<!-- templates/blog/partials/search_form.html -->
+
+<form method="get" action="{% url 'post_search' %}" class="search-form">
+    <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}" />
+    <button type="submit">Search</button>
+</form>

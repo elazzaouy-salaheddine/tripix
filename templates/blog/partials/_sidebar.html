@@ -1,0 +1,54 @@
+<div class="sidebar-area">
+  <!-- Search Widget -->
+  <div class="widget widget_search">
+    <h5 class="widget_title title-shep">Search</h5>
+    <form class="search-form" method="get" action="{% url 'post-search' %}">
+      <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}" required />
+      <button type="submit"><i class="far fa-search"></i></button>
+    </form>
+  </div>
+
+  <!-- Recent Posts Widget -->
+  <div class="widget widget_recent-posts">
+    <h5 class="widget_title title-shep">Latest posts</h5>
+    <div class="recent-post-wrap">
+      {% for post in latest_posts_sidebar %}
+      <div class="recent-post">
+        <div class="media-body">
+          <div class="recent-post-meta">
+            <a href="blog.html">
+              <i class="fa-solid fa-calendar"></i>
+              {{post.created_at|date:"F j, Y"}}
+            </a>
+          </div>
+          <h6 class="post-title">
+            <a class="text-inherit" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+          </h6>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Categories Widget -->
+  <div class="widget widget_categories">
+    <h5 class="widget_title title-shep">Categories</h5>
+    <ul class="custom-ul">
+      {% for category in categories %}  
+      <li>
+        <a href="{% url 'posts-by-category' slug=category.slug %}">{{ category.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Tags Widget -->
+  <div class="widget widget_meta">
+    <h5 class="widget_title title-shep">Tags</h5>
+    <div class="tagcloud">
+      {% for tag in tags %}
+      <a href="{% url 'posts-by-tag' slug=tag.slug %}">{{ tag.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</div>

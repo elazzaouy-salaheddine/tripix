@@ -93,23 +93,6 @@ class PostsByTagView(ListView):
         context['title'] = f"Posts Tagged: {Tag.objects.get(slug=self.kwargs['slug']).name}"
         return context
 
-# TODO: FIX THIS SEARCHE views
-class PostSearchView(ListView):
-    model = Post
-    template_name = 'blog/search_results.html'
-    context_object_name = 'posts'
-    paginate_by = 6
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        if query:
-            return Post.objects.filter(
-                models.Q(title__icontains=query) |
-                models.Q(content__icontains=query) |
-                models.Q(tags__name__icontains=query)
-            ).distinct().order_by('-created_at')
-        return Post.objects.none()  # Empty queryset if no query
-
 
 class AuthorListView(ListView):
     model = User
@@ -140,4 +123,44 @@ class AuthorDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.filter(author=self.object, published=True)
+        return context
+
+from django.views.generic import ListView
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Post
+
+class PostSearchView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+    context_object_name = 'posts'
+    paginate_by = 6
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Post.objects.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(excerpt__icontains=query) |
+                Q(tags__name__icontains=query) |
+                Q(destination__name__icontains=query),
+                published=True
+            ).select_related('author', 'category', 'destination'
+            ).prefetch_related('tags'
+            ).distinct().order_by('-created_at')
+        return Post.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('q', '')
+        context['query'] = query
+        context['search_performed'] = bool(query)
+        
+        # Add popular posts as fallback suggestions
+        if not context['posts'] and query:
+            context['suggestions'] = Post.objects.filter(
+                published=True
+            ).order_by('-created_at')[:3]
+            
         return context

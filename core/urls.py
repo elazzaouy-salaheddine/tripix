@@ -25,7 +25,7 @@ urlpatterns = [
     path("destinations/", include('destinations.urls')),
     path('blog/', include('blog.urls')),
     path('profile/', include('users.urls')),
-
+    path('emailmarketing/', include('emailmarketing.urls')),
     path('', include('pages.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
