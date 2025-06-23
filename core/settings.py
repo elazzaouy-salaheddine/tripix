@@ -125,7 +125,7 @@ TEMPLATES = [
     },
 ]
 
-# DATABASE CONFIGURATION
+""" # DATABASE CONFIGURATION
 DATABASE_URL = config('DATABASE_URL')
 db_config = dj_database_url.parse(DATABASE_URL)
 neon_endpoint_id = db_config['HOST'].split('-pooler')[0] # Extracts 'ep-young-tooth-abxwmjb4'
@@ -143,6 +143,25 @@ DATABASES = {
         }
     }
 }
+"""
+from urllib.parse import urlparse
+DATABASE_URL = config("DATABASE_URL")
+parsed_db_url = urlparse(DATABASE_URL)
+DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": parsed_db_url.path.lstrip("/"),
+            "USER": parsed_db_url.username,
+            "PASSWORD": parsed_db_url.password,
+            "HOST": parsed_db_url.hostname,
+            "PORT": parsed_db_url.port or 5432,
+        },
+        "OPTIONS": {
+            "CONN_MAX_AGE": 600,  # 10 minutes
+            'connect_timeout': 3,
+        }
+    }
+
 
 # PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
